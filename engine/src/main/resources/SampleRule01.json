@@ -1,0 +1,40 @@
+{
+  "input": {
+    "start": 100,
+    "end": 200
+  },
+  "ruleNode": {
+    "ruleId": "rule_01",
+    "ruleType": "ACTION",
+    "expression": "@ruleUtils.calculateDistance(metadata['start'], metadata['end'])",
+    "outputVariable": "output_key",
+    "onFalse": [
+      {
+        "ruleId": "rule_04",
+        "ruleType": "END",
+        "outputVariable": "",
+        "expression": "",
+        "onFalse": [
+          null
+        ],
+        "onTrue": [
+          null
+        ]
+      }
+    ],
+    "onTrue": [
+      {
+        "ruleId": "rule_04",
+        "ruleType": "END",
+        "outputVariable": "",
+        "expression": "",
+        "onFalse": [
+          null
+        ],
+        "onTrue": [
+          null
+        ]
+      }
+    ]
+  }
+}

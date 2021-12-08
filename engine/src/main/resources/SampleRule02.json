@@ -1,0 +1,78 @@
+{
+  "ruleId": "rule_01",
+  "ruleType": "CONFIG",
+  "outputVariable": "some_var1",
+  "expression": "{'isFraud':true, 'slabList':{'min':10,'max':50}, 'amount':100}",
+  "onFalse": [
+    {
+      "ruleId": "rule_04",
+      "ruleType": "END",
+      "outputVariable": "",
+      "expression": "",
+      "onFalse": [
+        null
+      ],
+      "onTrue": [
+        null
+      ]
+    }
+  ],
+  "onTrue": [
+    {
+      "ruleId": "rule_02",
+      "ruleType": "CONDITION",
+      "outputVariable": "some_var2",
+      "expression": "metadata['some_var1']['isFraud']",
+      "onFalse": [
+        {
+          "ruleId": "rule_04",
+          "ruleType": "END",
+          "outputVariable": "",
+          "expression": "",
+          "onFalse": [
+            null
+          ],
+          "onTrue": [
+            null
+          ]
+        }
+      ],
+      "onTrue": [
+        {
+          "ruleId": "rule_03",
+          "ruleType": "CONFIG",
+          "outputVariable": "output_key",
+          "expression": "{'message':'User is fraud'}",
+          "onFalse": [
+            {
+              "ruleId": "rule_04",
+              "ruleType": "END",
+              "outputVariable": "",
+              "expression": "",
+              "onFalse": [
+                null
+              ],
+              "onTrue": [
+                null
+              ]
+            }
+          ],
+          "onTrue": [
+            {
+              "ruleId": "rule_04",
+              "ruleType": "END",
+              "outputVariable": "",
+              "expression": "",
+              "onFalse": [
+                null
+              ],
+              "onTrue": [
+                null
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
