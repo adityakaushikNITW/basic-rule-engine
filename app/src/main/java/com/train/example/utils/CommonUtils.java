@@ -1,12 +1,11 @@
 package com.train.example.utils;
 
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.train.example.dao.RuleNodeDAO;
 import com.train.rule.enums.RuleType;
 import com.train.rule.pojo.RuleNode;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.train.rule.pojo.RuleNode.*;
@@ -29,6 +28,34 @@ public class CommonUtils {
         return attributeValueList.stream()
                 .map(x -> getRuleNode(x.getM()))
                 .collect(Collectors.toList());
+    }
+
+    public static RuleNode getRuleNode(final RuleNodeDAO ruleNodeDAO) {
+        if(Objects.isNull(ruleNodeDAO)) {
+            return null;
+        }
+        return RuleNode.builder().
+                ruleId(ruleNodeDAO.getRuleId()).
+                ruleType(ruleNodeDAO.getRuleType()).
+                expression(ruleNodeDAO.getExpression()).
+                onFalse(ruleNodeDAO.getOnFalse().stream().map(CommonUtils::getRuleNode).collect(Collectors.toList())).
+                onTrue(ruleNodeDAO.getOnTrue().stream().map(CommonUtils::getRuleNode).collect(Collectors.toList())).
+                outputVariable(ruleNodeDAO.getOutputVariable()).build();
+    }
+
+    public static RuleNodeDAO getRuleNodeDAO(final RuleNode ruleNode) {
+        if(Objects.isNull(ruleNode)) {
+            return null;
+        }
+        return RuleNodeDAO.builder().
+                ruleId(ruleNode.getRuleId()).
+                ruleType(ruleNode.getRuleType()).
+                expression(ruleNode.getExpression()).
+                onFalse(ruleNode.getOnFalse().stream().map(CommonUtils::getRuleNodeDAO).collect(Collectors.toList())).
+                onTrue(ruleNode.getOnTrue().stream().map(CommonUtils::getRuleNodeDAO).collect(Collectors.toList())).
+                outputVariable(ruleNode.getOutputVariable()).
+                lastUpdatedAtEpoch(new Date().getTime()).build();
+
     }
 
     public static Map<String, AttributeValue> getRuleNodeItemMap(final RuleNode ruleNode) {
